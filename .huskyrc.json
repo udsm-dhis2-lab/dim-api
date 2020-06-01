@@ -1,0 +1,6 @@
+{
+  "hooks": {
+    "pre-commit": "echo Committing",
+    "prepare-commit-msg": "exec < /dev/tty && git cz --hook"
+  }
+}

@@ -1,0 +1,23 @@
+[
+    {
+      "name": "development",
+      "type": "postgres",
+      "host": "localhost",
+      "port": 5432,
+      "username": "postgres",
+      "password": "postgres",
+      "database": "newhrmigrated",
+      "synchronize": false,
+      "logging": false,
+      "dropSchema": true,
+      "entities": ["src/modules/**/*.entity.ts"],
+      "migrations": ["src/database/migration/**/*.ts"],
+      "subscribers": ["src/subscriber/**/*.ts"],
+      "cli": {
+        "entitiesDir": "src/modules/entities",
+        "migrationsDir": "src/database/migration",
+        "subscribersDir": "src/subscriber"
+      }
+    }
+  ]
+  
