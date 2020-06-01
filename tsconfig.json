@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./"
+  },
+  "exclude": ["node_modules", "dist"],
+  "externalDependencies": [
+    "@nestjs/microservices",
+    "@nestjs/platform-express",
+    "class-transformer",
+    "class-validator",
+    "cache-manager"
+  ]
+}
