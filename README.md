@@ -14,6 +14,32 @@ University of Dar es salaam([UDSM](https://www.udsm.ac.tz/)), College of Informa
 DIM API is the main component here which abstract all the requirements for data exchange for system that decided to sent data towards the API. The development of all there components will go parallel to achieve what we pictured it as a straight forward solution for data exchange. As for any big system which involve innovation is not an overnight thing. DIM Mediator and all its components is evolving, The team will make sure all the requirements are accomodated to bring quality software as possible.
 
 ## Usage
+### Sending Data
+In order to send data to the API so that they can be used during data exchange, The followin API is used.
+
+`
+http://localhost:3000/api/payloads
+`
+#### Payload Format
+```
+{
+	"name": "ANC - January 2020",
+    "dataSet": "sXeLVvspZVA",
+    "completeDate": "2020-01-01",
+    "period": "202001",
+    "orgUnit": "U6NmybxRwTk",
+    "attributeOptionCombo": "DegnLZuuGor",
+    "dataValues": [
+		{
+		    "name": "ANC First Visit",
+		    "dataElement": "NtmbXqbvoVN",
+		    "categoryOptionCombo": "Rd0xfkPYDE3",
+		    "value": "123",
+		    "comment": "",
+		}
+    ]
+}
+```
 ### Report Generation
 In order too use the API to get the report of already integrated data between two systems, the following syntax must be adhered in order to get desired results.
 
