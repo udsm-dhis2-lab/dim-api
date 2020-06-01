@@ -83,18 +83,16 @@ export class BaseService<T extends DIMMediatorBaseEntity> {
    *
    * @param name
    */
-  async findByQueryParams(query: { [key: string]: any }): Promise<T[]> {
-    if (
-      _.has(query, 'orgunit') &&
-      _.has(query, 'period') &&
-      _.has(query, 'system')
-    ) {
+  async findByQueryParams(config: any[]): Promise<T[]> {
+    /**
+     *
+     */
+    if (config?.length > 0) {
+      /**
+       *
+       */
       return await this.modelRepository.find({
-        where: {
-          orgUnit: query?.orgUnit,
-          period: query?.period,
-          systems: query?.systems,
-        },
+        where: config,
       });
     }
   }

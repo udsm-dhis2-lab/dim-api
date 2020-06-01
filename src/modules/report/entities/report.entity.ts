@@ -25,9 +25,39 @@ export class Report extends EntityCoreProps {
     @Column({
         type: 'varchar',
         name: 'name',
-        nullable: false,
+        nullable: true,
     })
     name: string;
+
+    /**
+     *
+     */
+    @Column({
+        type: 'varchar',
+        name: 'dataelement',
+        nullable: false,
+    })
+    dataElement: string;
+
+    /**
+     *
+     */
+    @Column({
+        type: 'varchar',
+        name: 'categoryoptioncombo',
+        nullable: true,
+    })
+    categoryOptionCombo: string;
+
+    /**
+     *
+     */
+    @Column({
+        type: 'varchar',
+        name: 'datatype',
+        nullable: false,
+    })
+    dataType: string;
 
     /**
      *
@@ -64,8 +94,48 @@ export class Report extends EntityCoreProps {
      */
     @Column({
         type: 'varchar',
-        name: 'categoryoptioncombo',
+        name: 'from',
+        nullable: false,
+    })
+    from: string;
+
+    /**
+     *
+     */
+    @Column({
+        type: 'varchar',
+        name: 'to',
+        nullable: false,
+    })
+    to: string;
+
+    /**
+     *
+     */
+    @Column({
+        type: 'varchar',
+        name: 'status',
         nullable: true,
     })
-    categoryOptionCombo: string;
+    status: string;
+
+    /**
+     *
+     */
+    @Column({
+        type: 'varchar',
+        name: 'message',
+        nullable: true,
+    })
+    message: string;
+
+    /**
+     *
+     */
+    @Column({
+        type: 'varchar',
+        name: 'transactiondate',
+        nullable: true,
+    })
+    transactionDate: Date;
 }
