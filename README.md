@@ -14,12 +14,26 @@ University of Dar es salaam([UDSM](https://www.udsm.ac.tz/)), College of Informa
 DIM API is the main component here which abstract all the requirements for data exchange for system that decided to sent data towards the API. The development of all there components will go parallel to achieve what we pictured it as a straight forward solution for data exchange. As for any big system which involve innovation is not an overnight thing. DIM Mediator and all its components is evolving, The team will make sure all the requirements are accomodated to bring quality software as possible.
 
 ## Usage
+
+### API Endpoints
+DIM API has the following API Endpoints
+- `http://localhost:3000/api/systems
+`
+- `http://localhost:3000/api/payloads
+`
+- `http://localhost:3000/api/dataValues
+`
+- `http://localhost:3000/api/reports
+`
+
+All the Endpoints are locked for the following reuest methods from external `GET`, `DELETE` and `PUT`. Only `POST` is allowed for the extenal use. Also the above mentioned API Endpoints are not allowed to be used for public but only `http://localhost:3000/api/payloads` is allowed in order to allow systems to send their data through API.
 ### Sending Data
 In order to send data to the API so that they can be used during data exchange, The followin API is used.
 
 `
 http://localhost:3000/api/payloads
 `
+
 #### Payload Format
 ```
 {
