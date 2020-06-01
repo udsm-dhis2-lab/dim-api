@@ -28,7 +28,10 @@ import {
   deleteSuccessResponse,
 } from 'src/core/helpers/response.helper';
 import { SessionGuard } from 'src/modules/user/guards/session.guard';
-import { createQueryBuilder } from 'typeorm';
+import { dataElementsQueryGenerator } from '../helpers/query/data.helper';
+import { periodQueryGenerator } from '../helpers/query/period.helper';
+import { filterQueryParamGenerator } from '../helpers/query/filter.helper';
+import { findOptionQueryGenerator } from '../helpers/get-query-generator.helper';
 
 export class BaseController<T extends DIMMediatorBaseEntity> {
   /**
@@ -47,23 +50,16 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
    */
   @Get()
   @UseGuards(SessionGuard)
-  async findAll(@Query() query): Promise<ApiResult> {
-    if (_.has(query, 'paging') && query.paging === 'false') {
-      const allContents: T[] = await this.baseService.findAll();
-      return {
-        [this.Model.APIEndPoint]: _.map(allContents, sanitizeResponseObject),
-      };
-    } else if (_.has(query, 'name')) {
-      const foundName = await this.baseService.findOneByName(query.name);
-      return { [this.Model.APIEndPoint]: foundName };
-    } else if (
-      _.has(query, 'system') &&
-      _.has(query, 'orgUnit') &&
-      _.has(query, 'period')
-    ) {
-      const res = await this.baseService.findByQueryParams(query);
-    }
+  async findAll(@Query() query, @Param() param): Promise<ApiResult> {
+    const datas = _.has(query, 'data') ? query?.data : null;
+    const periods = _.has(query, 'period') ? query?.period : null;
+    const from = _.has(query, 'from') ? query?.from : null;
+    const to = _.has(query, 'to') ? query?.to : null;
+    const filter = _.has(query, 'filter') ? query?.filter : null;
 
+    /**
+     *
+     */
     const pagerDetails: Pager = getPagerDetails(query);
 
     const [entityRes, totalCount]: [
@@ -76,7 +72,72 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
       pagerDetails.page - 1,
     );
 
+    if (this.Model.APIEndPoint === 'reports' && !_.isEmpty(query)) {
+      /**
+       *
+       */
+      const dataElements = dataElementsQueryGenerator(datas);
+      const periodFreqs = periodQueryGenerator(periods);
+      const filterData = filterQueryParamGenerator(filter);
+      /**
+       *
+       */
+      const queryParamConfig = findOptionQueryGenerator(
+        dataElements,
+        periodFreqs,
+        filterData,
+        from,
+        to,
+      );
+      /**
+       *
+       */
+      const filteredContents = await this.baseService.findByQueryParams(
+        queryParamConfig,
+      );
+      /**
+       *
+       */
+      return {
+        [this.Model.APIEndPoint]: _.map(
+          filteredContents,
+          sanitizeResponseObject,
+        ),
+      };
+    }
+
+    /**
+     *
+     */
+    if (_.has(query, 'paging') && query.paging === 'false') {
+      /**
+       *
+       */
+      const allContents: T[] = await this.baseService.findAll();
+      /**
+       *
+       */
+      return {
+        [this.Model.APIEndPoint]: _.map(allContents, sanitizeResponseObject),
+      };
+    } else if (_.has(query, 'name')) {
+      /**
+       *
+       */
+      const foundName = await this.baseService.findOneByName(query.name);
+      /**
+       *
+       */
+      return { [this.Model.APIEndPoint]: foundName };
+    }
+
+    /**
+     *
+     */
     return {
+      /**
+       *
+       */
       pager: {
         ...pagerDetails,
         pageCount: entityRes.length,
@@ -85,6 +146,9 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
           pagerDetails.page + 1
         }`,
       },
+      /**
+       *
+       */
       [this.Model.APIEndPoint]: _.map(entityRes, sanitizeResponseObject),
     };
   }
