@@ -29,7 +29,10 @@ export class Message extends EntityCoreProps {
     })
     message: string;
 
-    @ManyToOne((type) => Report, (report) => report.messages)
+    @ManyToOne((type) => Report, (report) => report.messages, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
     @JoinColumn({ referencedColumnName: 'id' })
     report: Report;
 }
