@@ -6,4 +6,5 @@ export const Mapper = {
     payloads: 'payloads',
     dataValues: 'datavalues',
     reports: 'reports',
+    messages: 'messages',
 };

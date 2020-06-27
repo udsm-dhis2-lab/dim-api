@@ -4,64 +4,68 @@
 import * as _ from 'lodash';
 /**
  *
- * @param dataElements
- * @param periods
- * @param filterQueryParams
+ * @param DXs
+ * @param PEs
+ * @param filterParams
  * @param from
  * @param to
  */
 export function findOptionQueryGenerator(
-    dataElements: string[],
-    periods: string[],
-    filterQueryParams: any,
+    DXs: string[],
+    PEs: string[],
+    filterParams: any,
+    sourceExchangeDates: Date[],
     from: string,
     to: string,
 ) {
     /**
      *
      */
-    const de = dataElements.length > 0 ? dataElements : [];
-    const pe = periods.length > 0 ? periods : [];
-    const fqp = filterQueryParams.length > 0 ? filterQueryParams : [];
-    const fromSystem = from ? from : '';
-    const toSystem = to ? to : '';
-    const findOptions = [];
+    const sourceDataExchangeUids = DXs.length > 0 ? DXs : [];
+    const sourceExchangePeriods = PEs.length > 0 ? PEs : [];
+    const fqp = filterParams.length > 0 ? filterParams : [];
+    const sourceSystemId = from ? from : '';
+    const destinationSystemId = to ? to : '';
+    const queryOptions = [];
     /**
      *
      */
-    for (const dataElement of de) {
+    for (const sourceDataExchangeUid of sourceDataExchangeUids) {
         /**
          *
          */
-        for (const period of pe) {
+        for (const sourceExchangePeriod of sourceExchangePeriods) {
             /**
              *
              */
-            if (filterQueryParams.length === 2) {
-                /**
-                 *
-                 */
-                const createdObj = _.create();
-                /**
-                 *
-                 */
-                const filterConfig = _.reduce(fqp, _.extend);
-                /**
-                 *
-                 */
-                findOptions.push({
-                    ...createdObj,
-                    ...filterConfig,
-                    uid: dataElement,
-                    period,
-                    from: fromSystem,
-                    to: toSystem,
-                });
+            for (const sourceExchangeDate of sourceExchangeDates) {
+                if (filterParams.length > 0) {
+                    /**
+                     *
+                     */
+                    const createdObj = _.create();
+                    /**
+                     *
+                     */
+                    const filterConfig = _.reduce(fqp, _.extend);
+                    /**
+                     *
+                     */
+                    queryOptions.push({
+                        ...createdObj,
+                        ...filterConfig,
+                        sourceDataElementId: sourceDataExchangeUid,
+                        sourceExchangePeriod,
+                        sourceExchangeDate,
+                        sourceSystemId,
+                        destinationSystemId,
+                    });
+                }
             }
         }
     }
     /**
      *
      */
-    return findOptions;
+    return queryOptions;
 }

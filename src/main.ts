@@ -4,6 +4,7 @@ import Compression from 'compression';
 import Session from 'express-session';
 import Helmet from 'helmet';
 import bodyParser from 'body-parser';
+import express from 'express';
 
 import { AppModule } from './app.module';
 
@@ -24,7 +25,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.use(Helmet());
-  app.use(bodyParser.urlencoded({ limit: '50mb' }));
+  app.use(express.urlencoded({ limit: '50mb', extended: true }));
   app.use(bodyParser.json({ limit: '50mb' }));
   app.use(
     Session({

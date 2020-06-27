@@ -90,7 +90,10 @@ export class Payload extends EntityCoreProps {
     /**
      *
      */
-    @ManyToOne((type) => System, (system) => system.payloads)
+    @ManyToOne((type) => System, (system) => system.payloads, {
+        eager: true,
+        cascade: true,
+    })
     @JoinColumn({ referencedColumnName: 'id' })
     system: System;
 

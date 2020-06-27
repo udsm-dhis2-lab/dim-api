@@ -60,8 +60,8 @@ export class System extends EntityCoreProps {
          * Added support for eager in order to get all related
          * Data values for a specific PAYLOAD
          */
-        eager: true,
-        cascade: true,
+        // eager: true,
+        // cascade: true,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     })
