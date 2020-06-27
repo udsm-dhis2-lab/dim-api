@@ -1,11 +1,11 @@
 import * as _ from 'lodash';
 /**
  *
- * @param periods
+ * @param pe
  */
-export function periodQueryGenerator(periods: any): string[] {
+export function peQueryGenerator(pe: any): string[] {
     /**
      *
      */
-    return periods ? _.split(periods, ';') : [];
+    return pe ? _.split(pe, ';') : [];
 }
