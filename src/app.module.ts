@@ -14,6 +14,7 @@ import { SystemModule } from './modules/system/system.module';
 import { DataValueModule } from './modules/data-value/data-value.module';
 import { PayloadModule } from './modules/payload/payload.module';
 import { ReportModule } from './modules/report/report.module';
+import { MessageModule } from './modules/message/message.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { ReportModule } from './modules/report/report.module';
     SystemModule,
     DataValueModule,
     PayloadModule,
-    ReportModule
+    ReportModule,
+    MessageModule
   ],
 
   controllers: [AppController],

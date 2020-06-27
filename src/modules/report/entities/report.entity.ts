@@ -1,11 +1,12 @@
 /**
  *
  */
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 /**
  *
  */
 import { EntityCoreProps } from 'src/core/entities/core-props';
+import { Message } from 'src/modules/message/entities/message.entity';
 /**
  *
  */
@@ -14,104 +15,176 @@ import { EntityCoreProps } from 'src/core/entities/core-props';
  *
  */
 export class Report extends EntityCoreProps {
-    /**
-     *
-     */
     static APIEndPoint = 'reports';
 
-    /**
-     *
-     */
     @Column({
         type: 'varchar',
-        name: 'name',
+        name: 'sourcesystemid',
         nullable: true,
     })
-    name: string;
+    sourceSystemName: string;
 
-    /**
-     *
-     */
     @Column({
         type: 'varchar',
-        name: 'dataelement',
-        nullable: false,
-    })
-    dataElement: string;
-
-    /**
-     *
-     */
-    @Column({
-        type: 'varchar',
-        name: 'categoryoptioncombo',
+        name: 'sourcesystemName',
         nullable: true,
     })
-    categoryOptionCombo: string;
+    sourceSystemId: string;
 
-    /**
-     *
-     */
     @Column({
         type: 'varchar',
-        name: 'datatype',
+        name: 'sourceexchangeperiod',
         nullable: false,
     })
-    dataType: string;
+    sourceExchangePeriod: string;
 
-    /**
-     *
-     */
     @Column({
         type: 'varchar',
-        name: 'orgunit',
-        nullable: false,
+        name: 'sourceexchangedate',
+        nullable: true,
     })
-    orgUnit: string;
+    sourceExchangeDate: string;
 
-    /**
-     *
-     */
     @Column({
         type: 'varchar',
-        name: 'period',
-        nullable: false,
+        name: 'sourcevalue',
+        nullable: true,
     })
-    period: string;
+    sourceValue: string;
 
-    /**
-     *
-     */
-    @Column({
-        type: 'bigint',
-        name: 'value',
-        nullable: false,
-    })
-    value: string;
-
-    /**
-     *
-     */
     @Column({
         type: 'varchar',
-        name: 'from',
-        nullable: false,
+        name: 'sourcedataelementname',
+        nullable: true,
     })
-    from: string;
+    sourceDataElementName: string;
 
-    /**
-     *
-     */
     @Column({
         type: 'varchar',
-        name: 'to',
-        nullable: false,
+        name: 'sourcedataelementId',
+        nullable: true,
     })
-    to: string;
+    sourceDataElementId: string;
 
-    /**
-     *
-     */
+    @Column({
+        type: 'varchar',
+        name: 'sourceorgunitname',
+        nullable: true,
+    })
+    sourceorgunitname: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'sourceorgunitid',
+        nullable: true,
+    })
+    sourceOrgUnitId: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationsystemname',
+        nullable: true,
+    })
+    destinationSystemName: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationsystemid',
+        nullable: true,
+    })
+    destinationSystemId: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationdatasetname',
+        nullable: true,
+    })
+    destinationDataSetName: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationdatasetid',
+        nullable: true,
+    })
+    destinationDataSetId: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationcomment',
+        nullable: true,
+    })
+    destinationComment: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationsystem',
+        nullable: true,
+    })
+    destinationSystem: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationexchangeperiod',
+        nullable: true,
+    })
+    destinationExchangePeriod: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationexchangedate',
+        nullable: true,
+    })
+    destinationExchangeDate: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationvalue',
+        nullable: true,
+    })
+    destinationValue: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationcategoryoptioncomboname',
+        nullable: true,
+    })
+    destinationCategoryOptionComboName: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationcategoryoptioncomboid',
+        nullable: true,
+    })
+    destinationCategoryOptionComboId: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationdataelementname',
+        nullable: true,
+    })
+    destinationDataElementName: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationdataelementid',
+        nullable: true,
+    })
+    destinationDataElementId: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationorgunitname',
+        nullable: true,
+    })
+    destinationOrgUnitName: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'destinationorgunitid',
+        nullable: true,
+    })
+    destinationOrgUnitId: string;
+
     @Column({
         type: 'varchar',
         name: 'status',
@@ -119,23 +192,15 @@ export class Report extends EntityCoreProps {
     })
     status: string;
 
-    /**
-     *
-     */
-    @Column({
-        type: 'varchar',
-        name: 'message',
-        nullable: true,
+    @OneToMany((type) => Message, (message) => message.report, {
+        /**
+         * Added support for eager in order to get all related
+         * Data values for a specific Report
+         */
+        eager: true,
+        cascade: true,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
     })
-    message: string;
-
-    /**
-     *
-     */
-    @Column({
-        type: 'varchar',
-        name: 'transactiondate',
-        nullable: true,
-    })
-    transactionDate: Date;
+    messages: Message[];
 }

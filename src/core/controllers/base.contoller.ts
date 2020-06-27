@@ -28,10 +28,11 @@ import {
   deleteSuccessResponse,
 } from 'src/core/helpers/response.helper';
 import { SessionGuard } from 'src/modules/user/guards/session.guard';
-import { dataElementsQueryGenerator } from '../helpers/query/data.helper';
-import { periodQueryGenerator } from '../helpers/query/period.helper';
-import { filterQueryParamGenerator } from '../helpers/query/filter.helper';
+import { dxQueryGenerator } from '../helpers/query/data.helper';
+import { peQueryGenerator } from '../helpers/query/period.helper';
+import { filterQueryGenerator } from '../helpers/query/filter.helper';
 import { findOptionQueryGenerator } from '../helpers/get-query-generator.helper';
+import { getDateRange } from '../helpers/date.helper';
 
 export class BaseController<T extends DIMMediatorBaseEntity> {
   /**
@@ -51,12 +52,17 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
   @Get()
   @UseGuards(SessionGuard)
   async findAll(@Query() query, @Param() param): Promise<ApiResult> {
-    const datas = _.has(query, 'data') ? query?.data : null;
-    const periods = _.has(query, 'period') ? query?.period : null;
-    const from = _.has(query, 'from') ? query?.from : null;
-    const to = _.has(query, 'to') ? query?.to : null;
+    const dx = _.has(query, 'dx') ? query?.dx : null;
+    const pe = _.has(query, 'pe') ? query?.pe : null;
+    const startDate = _.has(query, 'startDate') ? query?.startDate : null;
+    const endDate = _.has(query, 'endDate') ? query?.endDate : null;
+    const sourceSystem = _.has(query, 'sourceSystem')
+      ? query?.sourceSystem
+      : null;
+    const destinationSystem = _.has(query, 'destinationSystem')
+      ? query?.destinationSystem
+      : null;
     const filter = _.has(query, 'filter') ? query?.filter : null;
-
     /**
      *
      */
@@ -76,18 +82,22 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
       /**
        *
        */
-      const dataElements = dataElementsQueryGenerator(datas);
-      const periodFreqs = periodQueryGenerator(periods);
-      const filterData = filterQueryParamGenerator(filter);
+      const sanitizedStartDate = new Date(startDate);
+      const sanitizedEndDate = new Date(endDate);
+      const DXs = dxQueryGenerator(dx);
+      const PEs = peQueryGenerator(pe);
+      const filterParams = filterQueryGenerator(filter);
+      const exchangeDates = getDateRange(sanitizedStartDate, sanitizedEndDate);
       /**
        *
        */
       const queryParamConfig = findOptionQueryGenerator(
-        dataElements,
-        periodFreqs,
-        filterData,
-        from,
-        to,
+        DXs,
+        PEs,
+        filterParams,
+        exchangeDates,
+        sourceSystem,
+        destinationSystem,
       );
       /**
        *

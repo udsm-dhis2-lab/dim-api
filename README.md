@@ -58,7 +58,7 @@ http://localhost:3000/api/payloads
 In order too use the API to get the report of already integrated data between two systems, the following syntax must be adhered in order to get desired results.
 
 `
-http://localhost:3000/api/reports?data=V95FW78EISl;zAH1xIT7l8x&period=2028;2018&from=ABC&to=XYZ&filter=status:failure&filter=transactionDate:2018-01-01
+localhost:3000/api/reports?dx=xXrwhpYL4UD;itIVeB2QV3B&pe=2018Q1;2018Q2;2018Q3;2018Q4&startDate=2020-06-27&endDate=2020-06-27&sourceSystem=FcFgmDqcw2S&destinationSystem=BYNWZGXQ8ZL&filter=status:failure&filter=dataSet:KmqsOeVELPT
 `
 - **http://localhost:3000/**: it refers to the server address that you want to request a particular service to the server. Below is the explanation of each section of the address.
     * **http://**: This section of the API address, specifically it define the protocal the you use to perform a request to the server.
