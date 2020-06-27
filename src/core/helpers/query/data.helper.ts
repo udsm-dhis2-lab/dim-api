@@ -3,9 +3,9 @@ import * as _ from 'lodash';
  *
  * @param data
  */
-export function dataElementsQueryGenerator(dataElements: any): string[] {
+export function dxQueryGenerator(dx: any): string[] {
     /**
      *
      */
-    return dataElements ? _.split(dataElements, ';') : [];
+    return dx ? _.split(dx, ';') : [];
 }
