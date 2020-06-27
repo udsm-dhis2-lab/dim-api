@@ -6,7 +6,10 @@ import * as _ from 'lodash';
  *
  * @param arr
  */
-export function filterQueryParamGenerator(arr: string[]) {
+export function filterQueryGenerator(arr: string[]) {
+    const mapper = {
+        dataSet: 'destinationDataSetId',
+    };
     /**
      *
      */
@@ -22,7 +25,9 @@ export function filterQueryParamGenerator(arr: string[]) {
             /**
              *
              */
-            [_.head(temp)]: _.last(temp),
+            [mapper[_.head(temp)] ? mapper[_.head(temp)] : _.head(temp)]: _.last(
+                temp,
+            ),
         };
     });
 }
