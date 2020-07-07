@@ -36,7 +36,32 @@ export class BaseService<T extends DIMMediatorBaseEntity> {
     return await this.modelRepository.find({ where });
   }
 
-  async findAndCount(fields, filter, size, page): Promise<[T[], number]> {
+  async findAndCount(
+    fields,
+    filter,
+    size,
+    page,
+    queryParams?,
+  ): Promise<[T[], number]> {
+    const metaData = this.modelRepository.manager.connection.getMetadata(
+      this.Model,
+    );
+    return await this.modelRepository.findAndCount({
+      select: getSelections(fields, metaData),
+      relations: getRelations(fields, metaData),
+      where: queryParams ? queryParams : getWhereConditions(filter),
+      take: size,
+      skip: page * size,
+    });
+  }
+
+  async findAndCountStatus(
+    fields,
+    filter,
+    size,
+    page,
+    queryParams,
+  ): Promise<[T[], number]> {
     const metaData = this.modelRepository.manager.connection.getMetadata(
       this.Model,
     );
@@ -44,9 +69,9 @@ export class BaseService<T extends DIMMediatorBaseEntity> {
     return await this.modelRepository.findAndCount({
       select: getSelections(fields, metaData),
       relations: getRelations(fields, metaData),
-      where: getWhereConditions(filter),
+      where: queryParams,
       take: size,
-      skip: page,
+      skip: page * size,
     });
   }
 

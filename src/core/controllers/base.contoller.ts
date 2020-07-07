@@ -75,7 +75,7 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
       query.fields,
       query.filter,
       pagerDetails.pageSize,
-      pagerDetails.page - 1,
+      +pagerDetails.page - 1,
     );
 
     if (this.Model.APIEndPoint === 'reports' && !_.isEmpty(query)) {
@@ -102,17 +102,46 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
       /**
        *
        */
-      const filteredContents = await this.baseService.findByQueryParams(
-        queryParamConfig,
-      );
+      // const filteredContents = await this.baseService.findByQueryParams(
+      //   queryParamConfig,
+      // );
       /**
        *
        */
+      // return {
+      //   [this.Model.APIEndPoint]: _.map(
+      //     filteredContents,
+      //     sanitizeResponseObject,
+      //   ),
+      // };
+
+      const [entityResult, countTotal]: [
+        T[],
+        number,
+      ] = await this.baseService.findAndCount(
+        query.fields,
+        query.filter,
+        pagerDetails.pageSize,
+        +pagerDetails.page - 1,
+        queryParamConfig,
+      );
+
       return {
-        [this.Model.APIEndPoint]: _.map(
-          filteredContents,
-          sanitizeResponseObject,
-        ),
+        /**
+         *
+         */
+        pager: {
+          ...pagerDetails,
+          pageCount: entityRes.length,
+          total: countTotal,
+          nextPage: `/api/${this.Model.APIEndPoint}?page=${
+            +pagerDetails.page + 1
+          }`,
+        },
+        /**
+         *
+         */
+        [this.Model.APIEndPoint]: _.map(entityResult, sanitizeResponseObject),
       };
     }
 
@@ -153,7 +182,7 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
         pageCount: entityRes.length,
         total: totalCount,
         nextPage: `/api/${this.Model.APIEndPoint}?page=${
-          pagerDetails.page + 1
+          +pagerDetails.page + 1
         }`,
       },
       /**
