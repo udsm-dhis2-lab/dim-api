@@ -15,6 +15,8 @@ import { DataValueModule } from './modules/data-value/data-value.module';
 import { PayloadModule } from './modules/payload/payload.module';
 import { ReportModule } from './modules/report/report.module';
 import { MessageModule } from './modules/message/message.module';
+import { DataModule } from './modules/data/data.module';
+import { DatasetModule } from './modules/dataset/dataset.module';
 
 @Module({
   imports: [
@@ -26,7 +28,9 @@ import { MessageModule } from './modules/message/message.module';
     DataValueModule,
     PayloadModule,
     ReportModule,
-    MessageModule
+    MessageModule,
+    DataModule,
+    DatasetModule
   ],
 
   controllers: [AppController],
