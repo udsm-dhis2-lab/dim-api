@@ -18,6 +18,6 @@ export class EntityCoreProps extends TransactionTimestamp {
      *  2. You can generat UUID by prepending a context specific keyword i.e uuid('DIMMediator', 20)
      *      Example of UUID::: DIMMediator_8aydSxYBrrP
      */
-    this.uid = uuid('', 11);
+    this.uid = this.uid  || uuid('', 11);
   }
 }
