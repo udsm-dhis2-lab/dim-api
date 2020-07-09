@@ -1,7 +1,7 @@
 import { Entity, Column } from 'typeorm';
 import { EntityCoreProps } from 'src/core/entities/core-props';
 
-@Entity('datavalues', { schema: 'public' })
+@Entity('data', { schema: 'public' })
 export class Data extends EntityCoreProps {
     static APIEndPoint = 'datas';
 
@@ -11,4 +11,11 @@ export class Data extends EntityCoreProps {
         nullable: false,
     })
     name: string;
+
+    @Column({
+        type: 'varchar',
+        name: 'type',
+        nullable: false,
+    })
+    type: string;
 }
