@@ -71,7 +71,7 @@ export class Report extends EntityCoreProps {
         name: 'sourceorgunitname',
         nullable: true,
     })
-    sourceorgunitname: string;
+    sourceOrgUnitName: string;
 
     @Column({
         type: 'varchar',
