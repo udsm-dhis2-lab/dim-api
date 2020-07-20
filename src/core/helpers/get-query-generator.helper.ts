@@ -2,6 +2,7 @@
  *
  */
 import * as _ from 'lodash';
+import { QueryOption } from '../models/query-option.model';
 /**
  *
  * @param DXs
@@ -27,6 +28,7 @@ export function findOptionQueryGenerator(
     const sourceSystemId = from ? from : '';
     const destinationSystemId = to ? to : '';
     const queryOptions = [];
+
     /**
      *
      */
@@ -64,8 +66,25 @@ export function findOptionQueryGenerator(
             }
         }
     }
-    /**
-     *
-     */
-    return queryOptions;
+    return this.queryOptimizer(queryOptions);
+}
+
+export function queryOptimizer(queryOptions: QueryOption[]) {
+    const statusSuccess: QueryOption[] = _.map(
+        queryOptions,
+        (queryOption: QueryOption) => {
+            return queryOption.status.toLowerCase() === 'all'
+                ? { ..._.omit(queryOption, ['status']), status: 'success' }
+                : queryOption;
+        },
+    );
+    const statusFailure: QueryOption[] = _.map(
+        queryOptions,
+        (queryOption: QueryOption) => {
+            return queryOption.status.toLowerCase() === 'all'
+                ? { ..._.omit(queryOption, ['status']), status: 'failure' }
+                : queryOption;
+        },
+    );
+    return _.union(statusSuccess, statusFailure);
 }
