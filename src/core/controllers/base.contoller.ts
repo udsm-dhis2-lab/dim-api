@@ -33,6 +33,8 @@ import { peQueryGenerator } from '../helpers/query/period.helper';
 import { filterQueryGenerator } from '../helpers/query/filter.helper';
 import { findOptionQueryGenerator } from '../helpers/get-query-generator.helper';
 import { getDateRange } from '../helpers/date.helper';
+import { addIdInEntityRelationship } from '../utils/san-with-id.util';
+import { IDToUIDConverter } from '../utils/uid-to-id.util';
 
 export class BaseController<T extends DIMMediatorBaseEntity> {
   /**
@@ -43,7 +45,7 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
   constructor(
     private readonly baseService: BaseService<T>,
     private readonly Model: typeof DIMMediatorBaseEntity,
-  ) {}
+  ) { }
 
   /**
    *
@@ -136,7 +138,7 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
           total: countTotal,
           nextPage: `/api/${this.Model.APIEndPoint}?page=${
             +pagerDetails.page + 1
-          }`,
+            }`,
         },
         /**
          *
@@ -183,7 +185,7 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
         total: totalCount,
         nextPage: `/api/${this.Model.APIEndPoint}?page=${
           +pagerDetails.page + 1
-        }`,
+          }`,
       },
       /**
        *
@@ -262,7 +264,11 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
       if (isIDExist !== undefined) {
         return entityExistResponse(res, isIDExist);
       } else {
-        const resolvedDTO = await ObjectPropsResolver(entityDTO, PayloadConfig);
+        const saltedEntity = await addIdInEntityRelationship(entityDTO);
+        const resolvedDTO = await ObjectPropsResolver(
+          saltedEntity,
+          PayloadConfig,
+        );
         const createdEntity = await this.baseService.create(resolvedDTO);
         if (createdEntity !== undefined) {
           const entityOmittedId = await _.omit(createdEntity, ['id']);
@@ -272,8 +278,10 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
               return key === 'uid' ? 'id' : key;
             },
           );
-
-          return postSuccessResponse(res, sanitizedCreatedEntity);
+          return postSuccessResponse(
+            res,
+            IDToUIDConverter(sanitizedCreatedEntity),
+          );
         } else {
           return genericFailureResponse(res);
         }

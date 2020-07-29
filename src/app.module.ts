@@ -17,6 +17,8 @@ import { ReportModule } from './modules/report/report.module';
 import { MessageModule } from './modules/message/message.module';
 import { DataModule } from './modules/data/data.module';
 import { DatasetModule } from './modules/dataset/dataset.module';
+import { EventModule } from './modules/event/event.module';
+import { EventDataValueModule } from './modules/event-data-value/event-data-value.module';
 
 @Module({
   imports: [
@@ -30,7 +32,9 @@ import { DatasetModule } from './modules/dataset/dataset.module';
     ReportModule,
     MessageModule,
     DataModule,
-    DatasetModule
+    DatasetModule,
+    EventModule,
+    EventDataValueModule
   ],
 
   controllers: [AppController],
