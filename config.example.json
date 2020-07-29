@@ -4,7 +4,7 @@
   },
   "database": {
     "type": "postgres",
-    "host": "postgres-database",
+    "host": "api-database",
     "port": 5432,
     "username": "postgres",
     "password": "postgres",
