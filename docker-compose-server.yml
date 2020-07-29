@@ -35,7 +35,7 @@ services:
         source: ./
         target: /home/app/
     depends_on: 
-      - postgres-database
+      - api-database
     networks: 
       - backend
 networks:
