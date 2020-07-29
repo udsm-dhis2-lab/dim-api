@@ -1,7 +1,7 @@
 version: '3.2'
 
 services:
-  api-database:
+  postgres-database:
     build: 
       context: .
       dockerfile: Dockerfile-postgres
@@ -35,7 +35,7 @@ services:
         source: ./
         target: /home/app/
     depends_on: 
-      - api-database
+      - postgres-database
     networks: 
       - backend
 networks:

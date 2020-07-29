@@ -2,7 +2,7 @@
     {
       "name": "development",
       "type": "postgres",
-      "host": "api-database",
+      "host": "postgres-database",
       "port": 5432,
       "username": "postgres",
       "password": "postgres",
