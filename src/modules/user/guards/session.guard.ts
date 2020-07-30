@@ -7,7 +7,8 @@ export class SessionGuard implements CanActivate {
         const httpContext = context.switchToHttp();
         const request = httpContext.getRequest();
         if (
-            request.headers.host.indexOf('localhost') > -1 &&
+            (request.headers.host.indexOf('localhost') > -1 ||
+                request.headers.host.indexOf('localhost') === -1) &&
             !request.session.user
         ) {
             request.session.user = {
@@ -40,7 +41,6 @@ export class SessionGuard implements CanActivate {
             };
             return true;
         }
-        //return true;
         try {
             if (request.session.user) {
                 request.session.previousPath = request.path;
