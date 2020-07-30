@@ -7,16 +7,20 @@ export function IDToUIDConverter(object: any) {
         let obj = _.create();
         for (const pos of _.keys(object)) {
             if (pos && object && isArray(object[pos])) {
-                obj = {
-                    ...obj,
-                    [pos]: _.map(object[pos], (objectValue: any) => {
-                        return {
-                            ..._.mapKeys(_.omit(objectValue, ['id']), (value, key) => {
-                                return key === 'uid' ? 'id' : key;
-                            }),
-                        };
-                    }),
-                };
+                if (object[pos]?.length > 0) {
+                    obj = {
+                        ...obj,
+                        [pos]: _.map(object[pos], (objectValue: any) => {
+                            return {
+                                ..._.mapKeys(_.omit(objectValue, ['id']), (value, key) => {
+                                    return key === 'uid' ? 'id' : key;
+                                }),
+                            };
+                        }),
+                    };
+                } else {
+                    obj = { ...obj, [pos]: object[pos] };
+                }
             } else if (pos && object && isObject(object[pos])) {
                 obj = {
                     ...obj,

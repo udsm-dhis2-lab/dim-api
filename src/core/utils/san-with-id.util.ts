@@ -17,7 +17,7 @@ export async function addIdInEntityRelationship(option: {
     let obj = _.create();
     if (option) {
         for (const key of await _.keys(option)) {
-            if (key && option && isArray(option[key])) {
+            if (key && option && isArray(option[key]) && option[key]?.length > 0) {
                 obj = {
                     ...obj,
                     [key]: _.map(option[key], (object: any) => {

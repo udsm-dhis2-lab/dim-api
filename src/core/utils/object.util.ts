@@ -11,7 +11,7 @@ export function isArray(prop: any): boolean {
      * We check if Object constructor name is
      * of type array in order to return boolean
      */
-    return prop.constructor.name === 'Array'
+    return prop && prop.constructor.name === 'Array'
         ? prop.constructor.name === 'Array'
         : false;
 }
@@ -29,7 +29,7 @@ export function isObject(prop: any): boolean {
      * We check if Object constructor name is
      * of type array in order to return boolean
      */
-    return prop.constructor.name === 'Object'
+    return prop && prop.constructor.name === 'Object'
         ? prop.constructor.name === 'Object'
         : false;
 }
