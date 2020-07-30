@@ -9,7 +9,7 @@ export class SessionGuard implements CanActivate {
         if (
             (request.headers.host.indexOf('localhost') > -1 ||
                 request.headers.host.indexOf('localhost') === -1) &&
-            !request.session.user
+            request.session.user
         ) {
             request.session.user = {
                 created: '2016-12-08T12:47:22.000Z',
