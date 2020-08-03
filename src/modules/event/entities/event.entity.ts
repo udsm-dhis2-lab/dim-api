@@ -5,7 +5,7 @@ import { EventDataValue } from 'src/modules/event-data-value/entities/event-data
 
 @Entity('event', { schema: 'public' })
 export class EventTracker extends EntityCoreProps {
-    static APIEndPoint = 'events';
+    static APIEndPoint = 'labResults';
 
     @Column({
         type: 'varchar',
