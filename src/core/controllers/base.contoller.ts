@@ -178,6 +178,27 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
           sanitizeResponseObject,
         ),
       };
+    } else if (this.Model.APIEndPoint === 'labResults' && _.isEmpty(query)) {
+      /**
+       *
+       */
+      return {
+        /**
+         *
+         */
+        pager: {
+          ...pagerDetails,
+          pageCount: entityRes.length,
+          total: totalCount,
+          nextPage: `/api/${this.Model.APIEndPoint}?page=${
+            +pagerDetails.page + 1
+          }`,
+        },
+        /**
+         *
+         */
+        [this.Model.APIEndPoint]: _.map(entityRes, sanitizeResponseObject),
+      };
     }
 
     /**
