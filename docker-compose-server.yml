@@ -28,7 +28,7 @@ services:
       - backend
   api:
     build: .
-    image: hisptz/dim-api:1.0.0
+    image: dimmediator/dim-api:1.0.0
     command: npm run start:dev
     volumes:
       - type: bind
