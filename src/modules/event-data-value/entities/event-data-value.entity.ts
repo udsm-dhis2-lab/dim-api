@@ -23,7 +23,7 @@ export class EventDataValue extends EntityCoreProps {
     @Column({
         type: 'boolean',
         name: 'providedelsewhere',
-        nullable: false,
+        nullable: true,
     })
     providedElsewhere: string;
 

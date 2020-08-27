@@ -31,3 +31,17 @@ export function filterQueryGenerator(arr: string[]) {
         };
     });
 }
+
+export function labResultQueryGenerator(arr: string[]) {
+    /**
+     *
+     */
+    let objQuery = _.create();
+    if (arr) {
+        for (const item of arr) {
+            const q = _.split(item, ':');
+            objQuery = { ...objQuery, [_.head(q)]: _.last(q) };
+        }
+        return [objQuery];
+    }
+}

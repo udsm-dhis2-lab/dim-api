@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   DeleteResult,
   Repository,
@@ -16,6 +16,7 @@ import { getWhereConditions } from 'src/core/utilities';
 import { Mapper } from 'src/core/resolvers/database.resolver';
 import { UIDToIDTransformation } from '@icodebible/utils/resolvers/uid-to-id';
 import { ObjectPayloadUpdater } from '@icodebible/utils/resolvers/updater';
+import { LabResultQuery } from '../models/lab-res-query.model';
 
 @Injectable()
 export class BaseService<T extends DIMMediatorBaseEntity> {
@@ -113,12 +114,53 @@ export class BaseService<T extends DIMMediatorBaseEntity> {
      *
      */
     if (config?.length > 0) {
-      /**
-       *
-       */
       return await this.modelRepository.find({
         where: config,
       });
+    }
+  }
+
+  async findByCustomQueryParams(
+    config: LabResultQuery[],
+    queryOption?: any,
+  ): Promise<T[]> {
+    /**
+     *
+     */
+    if (config?.length > 0 && queryOption) {
+      /**
+       *
+       */
+      const queryResults = await this.modelRepository.find({
+        where: [queryOption],
+      });
+      const conf: LabResultQuery = _.head(config);
+      let results = [];
+      if (queryResults && conf) {
+        for (const queryResult of await _.clone(queryResults)) {
+          if (
+            _.has(queryResult, 'dataValues') &&
+            queryResult?.dataValues.length > 0
+          ) {
+            for (const dataValue of await queryResult.dataValues) {
+              if (
+                _.has(dataValue, 'dataElement') &&
+                _.has(dataValue, 'value')
+              ) {
+                if (
+                  dataValue.dataElement === conf.dataElement &&
+                  dataValue.value === conf.value
+                ) {
+                  results = [...results, queryResult];
+                }
+              } else {
+                Logger.warn('Lab Results has no Data Element and Data Value');
+              }
+            }
+          }
+        }
+        return await results;
+      }
     }
   }
 

@@ -30,7 +30,10 @@ import {
 import { SessionGuard } from 'src/modules/user/guards/session.guard';
 import { dxQueryGenerator } from '../helpers/query/data.helper';
 import { peQueryGenerator } from '../helpers/query/period.helper';
-import { filterQueryGenerator } from '../helpers/query/filter.helper';
+import {
+  filterQueryGenerator,
+  labResultQueryGenerator,
+} from '../helpers/query/filter.helper';
 import { findOptionQueryGenerator } from '../helpers/get-query-generator.helper';
 import { getDateRange } from '../helpers/date.helper';
 import { addIdInEntityRelationship } from '../utils/san-with-id.util';
@@ -45,7 +48,7 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
   constructor(
     private readonly baseService: BaseService<T>,
     private readonly Model: typeof DIMMediatorBaseEntity,
-  ) { }
+  ) {}
 
   /**
    *
@@ -138,12 +141,42 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
           total: countTotal,
           nextPage: `/api/${this.Model.APIEndPoint}?page=${
             +pagerDetails.page + 1
-            }`,
+          }`,
         },
         /**
          *
          */
         [this.Model.APIEndPoint]: _.map(entityResult, sanitizeResponseObject),
+      };
+    }
+
+    // LAB Results Query Section
+    if (this.Model.APIEndPoint === 'labResults' && !_.isEmpty(query)) {
+      const orgUnit = _.has(query, 'orgUnit') ? query?.orgUnit : null;
+      const program = _.has(query, 'program') ? query?.program : null;
+      const programStage = _.has(query, 'programStage')
+        ? query?.programStage
+        : null;
+      /**
+       *
+       */
+      const queryOptions = {
+        orgUnit,
+        program,
+        programStage,
+      };
+      const filterParams = labResultQueryGenerator(filter);
+
+      const filteredContents = await this.baseService.findByCustomQueryParams(
+        filterParams,
+        queryOptions,
+      );
+
+      return {
+        [this.Model.APIEndPoint]: _.map(
+          filteredContents,
+          sanitizeResponseObject,
+        ),
       };
     }
 
@@ -172,26 +205,26 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
       return { [this.Model.APIEndPoint]: foundName };
     }
 
-    /**
-     *
-     */
-    return {
-      /**
-       *
-       */
-      pager: {
-        ...pagerDetails,
-        pageCount: entityRes.length,
-        total: totalCount,
-        nextPage: `/api/${this.Model.APIEndPoint}?page=${
-          +pagerDetails.page + 1
-          }`,
-      },
-      /**
-       *
-       */
-      [this.Model.APIEndPoint]: _.map(entityRes, sanitizeResponseObject),
-    };
+    // /**
+    //  *
+    //  */
+    // return {
+    //   /**
+    //    *
+    //    */
+    //   pager: {
+    //     ...pagerDetails,
+    //     pageCount: entityRes.length,
+    //     total: totalCount,
+    //     nextPage: `/api/${this.Model.APIEndPoint}?page=${
+    //       +pagerDetails.page + 1
+    //     }`,
+    //   },
+    //   /**
+    //    *
+    //    */
+    //   [this.Model.APIEndPoint]: _.map(entityRes, sanitizeResponseObject),
+    // };
   }
 
   /**
