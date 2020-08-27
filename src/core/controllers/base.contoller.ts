@@ -226,26 +226,26 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
       return { [this.Model.APIEndPoint]: foundName };
     }
 
-    // /**
-    //  *
-    //  */
-    // return {
-    //   /**
-    //    *
-    //    */
-    //   pager: {
-    //     ...pagerDetails,
-    //     pageCount: entityRes.length,
-    //     total: totalCount,
-    //     nextPage: `/api/${this.Model.APIEndPoint}?page=${
-    //       +pagerDetails.page + 1
-    //     }`,
-    //   },
-    //   /**
-    //    *
-    //    */
-    //   [this.Model.APIEndPoint]: _.map(entityRes, sanitizeResponseObject),
-    // };
+    /**
+     *
+     */
+    return {
+      /**
+       *
+       */
+      pager: {
+        ...pagerDetails,
+        pageCount: entityRes.length,
+        total: totalCount,
+        nextPage: `/api/${this.Model.APIEndPoint}?page=${
+          +pagerDetails.page + 1
+        }`,
+      },
+      /**
+       *
+       */
+      [this.Model.APIEndPoint]: _.map(entityRes, sanitizeResponseObject),
+    };
   }
 
   /**
