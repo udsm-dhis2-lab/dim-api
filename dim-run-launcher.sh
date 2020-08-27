@@ -1,4 +1,4 @@
-docker-compose -f  docker-compose-server.yml up
+docker-compose -f  docker-compose-server.yml up -d
 docker exec -i dim-api_postgres-database_1 psql -U postgres -c "DROP DATABASE IF EXISTS epilabdb" 
 docker exec -i dim-api_postgres-database_1 psql -U postgres -c "CREATE DATABASE epilabdb WITH ENCODING='UTF8' OWNER=postgres;"
 docker exec -i dim-api_postgres-database_1 psql -U postgres -c "ALTER USER postgres WITH PASSWORD 'postgres';"
