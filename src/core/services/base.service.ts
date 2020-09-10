@@ -250,10 +250,11 @@ export class BaseService<T extends DIMMediatorBaseEntity> {
       /**
        *
        */
-      const resolvedEntityDTO: any = await ObjectPayloadUpdater(
-        entity,
-        updates,
-      );
+      // const resolvedEntityDTO: any = await ObjectPayloadUpdater(
+      //   entity,
+      //   updates,
+      // );
+      const resolvedEntityDTO: any = await _.merge(entity, updates);
       /**
        *
        */
