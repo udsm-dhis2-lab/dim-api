@@ -152,32 +152,52 @@ export class BaseController<T extends DIMMediatorBaseEntity> {
 
     // LAB Results Query Section
     if (this.Model.APIEndPoint === 'labResults' && !_.isEmpty(query)) {
-      const orgUnit = _.has(query, 'orgUnit') ? query?.orgUnit : null;
-      const program = _.has(query, 'program') ? query?.program : null;
-      const programStage = _.has(query, 'programStage')
-        ? query?.programStage
-        : null;
-      /**
-       *
-       */
-      const queryOptions = {
-        orgUnit,
-        program,
-        programStage,
-      };
-      const filterParams = labResultQueryGenerator(filter);
+      if (_.has(query, 'page')) {
+        return {
+          /**
+           *
+           */
+          pager: {
+            ...pagerDetails,
+            pageCount: entityRes.length,
+            total: totalCount,
+            nextPage: `/api/${this.Model.APIEndPoint}?page=${
+              +pagerDetails.page + 1
+            }`,
+          },
+          /**
+           *
+           */
+          [this.Model.APIEndPoint]: _.map(entityRes, sanitizeResponseObject),
+        };
+      } else {
+        const orgUnit = _.has(query, 'orgUnit') ? query?.orgUnit : null;
+        const program = _.has(query, 'program') ? query?.program : null;
+        const programStage = _.has(query, 'programStage')
+          ? query?.programStage
+          : null;
+        /**
+         *
+         */
+        const queryOptions = {
+          orgUnit,
+          program,
+          programStage,
+        };
+        const filterParams = labResultQueryGenerator(filter);
 
-      const filteredContents = await this.baseService.findByCustomQueryParams(
-        filterParams,
-        queryOptions,
-      );
+        const filteredContents = await this.baseService.findByCustomQueryParams(
+          filterParams,
+          queryOptions,
+        );
 
-      return {
-        [this.Model.APIEndPoint]: _.map(
-          filteredContents,
-          sanitizeResponseObject,
-        ),
-      };
+        return {
+          [this.Model.APIEndPoint]: _.map(
+            filteredContents,
+            sanitizeResponseObject,
+          ),
+        };
+      }
     } else if (this.Model.APIEndPoint === 'labResults' && _.isEmpty(query)) {
       /**
        *
